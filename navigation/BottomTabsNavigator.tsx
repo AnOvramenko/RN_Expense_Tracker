@@ -10,23 +10,25 @@ import { useNavigation } from "@react-navigation/native";
 const Tabs = createBottomTabNavigator<BottomTabsParamsList>();
 
 export const BottomTabsNavigation = () => {
-  const navigation = useNavigation<AllNavigationProps>();
-  const manageExpenseItem = () => {
-    navigation.navigate("ManageExpenses");
-  };
+  // const navigation = useNavigation<AllNavigationProps>();
+  // const manageExpenseItem = () => {
+  //   navigation.navigate("ManageExpenses");
+  // };
 
   return (
     <Tabs.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: Colors.primary },
+      screenOptions={({navigation}) => ({
+        headerStyle: { backgroundColor: Colors.primary500 },
         headerTintColor: Colors.white,
-        sceneStyle: { backgroundColor: Colors.primaryBg },
-        tabBarStyle: { backgroundColor: Colors.primary },
-        tabBarActiveTintColor: Colors.accent,
+        sceneStyle: { backgroundColor: Colors.primary700 },
+        tabBarStyle: { backgroundColor: Colors.primary500 },
+        tabBarActiveTintColor: Colors.accent500,
         headerRight: () => (
-          <IconButton ionIconName="add" onPress={manageExpenseItem} />
+          <IconButton ionIconName="add" onPress={() => {
+            navigation.getParent()?.navigate('ManageExpenses')
+          }} />
         ),
-      }}
+      })}
     >
       <Tabs.Screen
         name="RecentExpenses"
@@ -36,6 +38,7 @@ export const BottomTabsNavigation = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="hourglass" color={color} size={size} />
           ),
+          tabBarLabel: 'Recent',
         }}
       />
       <Tabs.Screen

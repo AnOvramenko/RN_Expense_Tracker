@@ -1,10 +1,25 @@
+import { StyleProp, ViewStyle } from "react-native";
+
 export const Colors = {
-  primary: "#381daf",
-  primaryBg: "#2D0589",
-  primaryModalBg: "#1C0C56",
-  secondary: "#DFD5FC",
-  accent: "#F3BA1A",
-  primaryText: "#3C307C",
-  red: "#8C1352",
-  white: 'white',
+  primary50: "#e4d9fd",
+  primary100: "#c6affc",
+  primary200: "#a281f0",
+  primary400: "#5721d4",
+  primary500: "#3e04c3",
+  primary700: "#2d0689",
+  primary800: "#200364",
+  accent500: "#f7bc0c",
+  error50: "#fcc4e4",
+  error500: "#9b095c",
+  gray500: "#39324a",
+  gray700: "#221c30",
+  white: 'white'
 };
+
+export const ShadowStyles = {
+  elevation: 3,
+  shadowColor: Colors.gray500,
+  shadowRadius: 4,
+  shadowOffset: {width: 1, height: 1},
+  shadowOpacity: 0.4,
+}
