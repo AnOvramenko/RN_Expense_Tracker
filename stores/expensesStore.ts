@@ -1,16 +1,18 @@
 import { create } from "zustand";
 import { Expense } from "../types/expense";
 import { DUMMY_EXPENSES } from "../data";
+import { getExpenses } from "../utils/http";
 
 interface ExpensesStore {
   expenses: Expense[];
   removeExpense: (id: string) => void;
-  addExpense: ({ amount, date, title }: Omit<Expense, "id">) => void;
+  addExpense: ({ amount, date, description }: Expense) => void;
   updateExpense: (expense: Expense) => void;
+  fetchExpenses: () => Promise<void>;
 }
 
 export const useExpensesStore = create<ExpensesStore>((set) => ({
-  expenses: DUMMY_EXPENSES,
+  expenses: [],
   removeExpense: (id: string) =>
     set((state) => ({
       expenses: state.expenses.filter((expense) => expense.id !== id),
@@ -26,7 +28,7 @@ export const useExpensesStore = create<ExpensesStore>((set) => ({
           })
         ) + 1;
       return {
-        expenses: [{ id: `e${newId}`, ...expenseData }, ...state.expenses],
+        expenses: [{ ...expenseData, id: `e${newId}` }, ...state.expenses],
       };
     }),
   updateExpense: (newExpense) =>
@@ -35,4 +37,12 @@ export const useExpensesStore = create<ExpensesStore>((set) => ({
         newExpense.id === expense.id ? newExpense : expense
       ),
     })),
+  fetchExpenses: async () => {
+    try {
+      const res = await getExpenses();
+      set({ expenses: res });
+    } catch (e) {
+      console.error("Failed to fetch", e);
+    }
+  },
 }));

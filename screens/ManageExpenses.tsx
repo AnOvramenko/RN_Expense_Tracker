@@ -1,16 +1,24 @@
-import { View, Text } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import React, { useEffect } from "react";
 import { ManageExpensesScreenProps } from "../navigation/types";
 import ActionButton from "../components/ui/ActionButton";
 import IconButton from "../components/ui/IconButton";
 import { Colors } from "../GlobalStyles";
 import { useExpensesStore } from "../stores/expensesStore";
+import ExpenseForm from "../components/ManageExpense/ExpenseForm";
+import { Expense } from "../types/expense";
+import { storeExpense } from "../utils/http";
 
 const ManageExpenses = ({ navigation, route }: ManageExpensesScreenProps) => {
   const removeExpense = useExpensesStore((state) => state.removeExpense);
   const addExpense = useExpensesStore((state) => state.addExpense);
   const updateExpense = useExpensesStore((state) => state.updateExpense);
+  const expenses = useExpensesStore((state) => state.expenses);
   const isEditing = !!route.params;
+
+  const selectedExpense = expenses.find(
+    (expense) => expense.id === route.params?.id
+  );
   const handleCancelButton = () => {
     navigation.goBack();
   };
@@ -22,22 +30,18 @@ const ManageExpenses = ({ navigation, route }: ManageExpensesScreenProps) => {
     navigation.goBack();
   };
 
-  const handleConfirmExpense = () => {
-    navigation.goBack();
+  const handleConfirmExpense = (expenseData: Expense) => {
     if (isEditing) {
-      updateExpense({
-        id: "e1",
-        title: "Groceries Big Shop",
-        date: new Date("2022-03-12"),
-        amount: 999.99,
-      });
+      updateExpense(expenseData);
     } else {
-      addExpense({
-        amount: 32.25,
-        date: new Date(),
-        title: "React Native Course",
+      storeExpense({
+        amount: expenseData.amount,
+        date: expenseData.date,
+        description: expenseData.description,
       });
+      addExpense(expenseData);
     }
+    navigation.goBack();
   };
 
   useEffect(() => {
@@ -46,40 +50,15 @@ const ManageExpenses = ({ navigation, route }: ManageExpensesScreenProps) => {
     });
   }, [navigation, route.params]);
 
-  // if (route.params) {
-  //   return (
-  //     <View className="p-4">
-  //       <View className="mx-20 flex-row gap-1">
-  //         <ActionButton type="cancel" onPress={handleCancelButton}>
-  //           Cancel
-  //         </ActionButton>
-  //         <ActionButton type="ok" onPress={handleUpdateExpense}>
-  //           Update
-  //         </ActionButton>
-  //       </View>
-  //       <View className="h-[2px] bg-primary100 m-5" />
-  //       <View className="items-center">
-  //         <IconButton
-  //           ionIconName="trash"
-  //           color={Colors.error500}
-  //           size={40}
-  //           onPress={handleRemoveExpense}
-  //         />
-  //       </View>
-  //     </View>
-  //   );
-  // }
-
   return (
     <View className="p-4">
-      <View className="mx-20 flex-row gap-1">
-        <ActionButton type="cancel" onPress={handleCancelButton}>
-          Cancel
-        </ActionButton>
-        <ActionButton type="ok" onPress={handleConfirmExpense}>
-          {isEditing ? "Update" : "Add"}
-        </ActionButton>
-      </View>
+      <ExpenseForm
+        onCancel={handleCancelButton}
+        onSubmit={handleConfirmExpense}
+        submitButtonLabel={isEditing ? "Update" : "Add"}
+        selectedExpenseData={selectedExpense}
+      />
+
       {isEditing && (
         <>
           <View className="h-[2px] bg-primary100 m-5" />

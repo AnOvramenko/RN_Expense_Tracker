@@ -1,6 +1,8 @@
 export interface Expense {
   id: string;
-  title: string;
-  date: Date; //string; //(12-03-2022)
+  description: string;
+  date: Date;
   amount: number;
 }
+
+export interface newExpense extends Omit<Expense, 'id'>{};

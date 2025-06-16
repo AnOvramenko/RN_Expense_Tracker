@@ -24,8 +24,8 @@ const ExpanseItem = ({ item }: ExpanseItemProps) => {
         className="flex-row justify-between items-center p-3"
         onPress={handleUpdate}
       >
-        <View>
-          <Text className="text-white text-xl font-bold">{item.title}</Text>
+        <View className="flex-1">
+          <Text className="text-white text-xl font-bold">{item.description}</Text>
           <Text className="text-white">{convertDateToString(item.date)}</Text>
         </View>
         <View className="bg-white w-20 h-12 items-center justify-center rounded-lg">

@@ -7,7 +7,8 @@ export const getRecentExpenses = (expenses: Expense[], days = 7): Expense[] => {
   daysAgo.setDate(today.getDate() - days);
 
   const recentExpenses = expenses.filter((expense) => {
-    return expense.date >= daysAgo && expense.date <= today;
+    return expense.date >= daysAgo ;
+    // && expense.date <= today
   });
 
   return recentExpenses;
@@ -15,9 +16,9 @@ export const getRecentExpenses = (expenses: Expense[], days = 7): Expense[] => {
 
 export const convertDateToString = (date: Date) => {
   const dateString = [
-    date.getDate(),
-    date.getMonth() + 1,
     date.getFullYear(),
+    date.getMonth() + 1,
+    date.getDate(),
   ].join("-");
   return dateString;
 };
