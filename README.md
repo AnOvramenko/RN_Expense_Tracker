@@ -35,7 +35,6 @@ A simple expense tracking app built with **React Native** and **Expo**. It allow
 ```bash
 git clone https://github.com/AnOvramenko/RN_Expense_Tracker.git
 cd RN_Expense_Tracker
-Install dependencies
 ```
 
 2. Install dependencies
@@ -64,14 +63,14 @@ npx expo start
 ## 📱 Screenshots
 
 <p align="center">
-  <img src="assets/screenshots/recentScreen.png" alt="Home Screen" width="250" style="margin: 10px;" />
-  <img src="assets/screenshots/AllExpenses.png" alt="Recipe Detail" width="250" style="margin: 10px;" />
-  <img src="assets/screenshots/AddForm.png" alt="Shopping List" width="250" style="margin: 10px;" />
-  <img src="assets/screenshots/addFormValidation.png" alt="Shopping List" width="250" style="margin: 10px;" />
-  <img src="assets/screenshots/Update.png" alt="Shopping List" width="250" style="margin: 10px;" />
-  <img src="assets/screenshots/datePicker.png" alt="Shopping List" width="250" style="margin: 10px;" />
-  <img src="assets/screenshots/ErrorOnAdd.png" alt="Shopping List" width="250" style="margin: 10px;" />
-  <img src="assets/screenshots/ErrorInitial.png" alt="Shopping List" width="250" style="margin: 10px;" />
+  <img src="assets/screenshots/recentScreen.png" alt="Recent Screen" width="250" style="margin: 10px;" />
+  <img src="assets/screenshots/AllExpenses.png" alt="All Expenses Screen" width="250" style="margin: 10px;" />
+  <img src="assets/screenshots/AddForm.png" alt="Add Form" width="250" style="margin: 10px;" />
+  <img src="assets/screenshots/addFormValidation.png" alt="Add Form Validation" width="250" style="margin: 10px;" />
+  <img src="assets/screenshots/Update.png" alt="Update Form" width="250" style="margin: 10px;" />
+  <img src="assets/screenshots/datePicker.png" alt="Native Date Picker" width="250" style="margin: 10px;" />
+  <img src="assets/screenshots/ErrorOnAdd.png" alt="Error Overlay on Add Expense" width="250" style="margin: 10px;" />
+  <img src="assets/screenshots/ErrorInitial.png" alt="Error Overlay on Initial load" width="250" style="margin: 10px;" />
 </p>
 
 ---
