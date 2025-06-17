@@ -14,7 +14,7 @@ A simple expense tracking app built with **React Native** and **Expo**. It allow
 - **Zustand** — lightweight global state management
 - **Axios** — HTTP client for API requests
 - **@react-native-community/datetimepicker** — native date picking
-- **Firebase** — **Firebase** — used as a backend via REST API for storing expenses
+- **Firebase** — used as a backend via REST API for storing expenses
 
 ---
 
