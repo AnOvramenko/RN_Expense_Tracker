@@ -12,7 +12,7 @@ const ActionButton = ({ children, onPress, type }: ActionButtonProps) => {
   return (
     <View
       className={
-        "flex-grow rounded-lg w-0" + (type === "ok" ? " bg-primary500" : "")
+        "flex-1 rounded-lg" + (type === "ok" ? " bg-primary500" : "")
       }
       style={{overflow: 'hidden'}}
     >
@@ -20,7 +20,6 @@ const ActionButton = ({ children, onPress, type }: ActionButtonProps) => {
       onPress={onPress} 
       style={({pressed}) => [pressed && {backgroundColor: Colors.white}]}
       className="items-center justify-center p-4 active:opacity-70"
-      // android_ripple={type === 'ok' ? {color: Colors.primary100 } : null}
       android_ripple={{color: Colors.primary100 }}
       >
         <Text className="text-primary50">{children}</Text>

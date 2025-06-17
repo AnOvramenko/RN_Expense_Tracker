@@ -1,15 +1,19 @@
-import { View, Text, TextInput } from "react-native";
-import React, { useEffect } from "react";
+import { View } from "react-native";
+import React, { useEffect, useState } from "react";
 import { ManageExpensesScreenProps } from "../navigation/types";
-import ActionButton from "../components/ui/ActionButton";
 import IconButton from "../components/ui/IconButton";
 import { Colors } from "../GlobalStyles";
 import { useExpensesStore } from "../stores/expensesStore";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
-import { Expense } from "../types/expense";
-import { storeExpense } from "../utils/http";
+import { Expense, NewExpense } from "../types/expense";
+import { deleteExpense, storeExpense, updateServerExpense } from "../utils/http";
+import LoadingOverlay from "../components/ui/LoadingOverlay";
+import ErrorOverlay from "../components/ui/ErrorOverlay";
 
 const ManageExpenses = ({ navigation, route }: ManageExpensesScreenProps) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
   const removeExpense = useExpensesStore((state) => state.removeExpense);
   const addExpense = useExpensesStore((state) => state.addExpense);
   const updateExpense = useExpensesStore((state) => state.updateExpense);
@@ -23,32 +27,54 @@ const ManageExpenses = ({ navigation, route }: ManageExpensesScreenProps) => {
     navigation.goBack();
   };
 
-  const handleRemoveExpense = () => {
+  const handleRemoveExpense = async () => {
+    setIsSubmitting(true);
     if (isEditing) {
-      removeExpense(route.params.id);
+      try {
+        await deleteExpense(route.params.id);
+        removeExpense(route.params.id);
+        navigation.goBack();
+      } catch (error) {
+        setError('Could not delete expense - please try again later');
+        setIsSubmitting(false);
+      } 
     }
-    navigation.goBack();
   };
 
-  const handleConfirmExpense = (expenseData: Expense) => {
-    if (isEditing) {
-      updateExpense(expenseData);
-    } else {
-      storeExpense({
-        amount: expenseData.amount,
-        date: expenseData.date,
-        description: expenseData.description,
-      });
-      addExpense(expenseData);
+  const handleConfirmExpense = async (expenseData: NewExpense) => {
+    setIsSubmitting(true)
+    try {
+      if (isEditing) {
+        updateExpense({id: route.params.id, ...expenseData});
+        await updateServerExpense(route.params.id, expenseData)
+      } else {
+        const id = await storeExpense(expenseData);
+        addExpense({id, ...expenseData});
+      }
+
+      navigation.goBack();
+    } catch (e) {
+      setError(`Could not ${isEditing ? 'update' : 'add'} expense - please try again later`);
+      setIsSubmitting(false)
     }
-    navigation.goBack();
   };
+  
+
+  //2025-06-12
 
   useEffect(() => {
     navigation.setOptions({
       title: isEditing ? "Edit Expense" : "Add Expense",
     });
   }, [navigation, route.params]);
+
+  if (isSubmitting) {
+    return <LoadingOverlay />
+  }
+
+  if (error && !isSubmitting) {
+    return <ErrorOverlay message={error} onConfirm={() => setError('')}/>
+  }
 
   return (
     <View className="p-4">

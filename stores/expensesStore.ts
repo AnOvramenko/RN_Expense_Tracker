@@ -6,7 +6,7 @@ import { getExpenses } from "../utils/http";
 interface ExpensesStore {
   expenses: Expense[];
   removeExpense: (id: string) => void;
-  addExpense: ({ amount, date, description }: Expense) => void;
+  addExpense: (expense: Expense) => void;
   updateExpense: (expense: Expense) => void;
   fetchExpenses: () => Promise<void>;
 }
@@ -19,16 +19,16 @@ export const useExpensesStore = create<ExpensesStore>((set) => ({
     })),
   addExpense: (expenseData) =>
     set((state) => {
-      const newId =
-        Math.max(
-          0,
-          ...state.expenses.map((expense) => {
-            const currId = Number(expense.id.slice(1));
-            return currId;
-          })
-        ) + 1;
+      // const newId =
+      //   Math.max(
+      //     0,
+      //     ...state.expenses.map((expense) => {
+      //       const currId = Number(expense.id.slice(1));
+      //       return currId;
+      //     })
+      //   ) + 1;
       return {
-        expenses: [{ ...expenseData, id: `e${newId}` }, ...state.expenses],
+        expenses: [expenseData, ...state.expenses],
       };
     }),
   updateExpense: (newExpense) =>
@@ -38,11 +38,7 @@ export const useExpensesStore = create<ExpensesStore>((set) => ({
       ),
     })),
   fetchExpenses: async () => {
-    try {
       const res = await getExpenses();
-      set({ expenses: res });
-    } catch (e) {
-      console.error("Failed to fetch", e);
-    }
+      set({ expenses: res.reverse() });
   },
 }));

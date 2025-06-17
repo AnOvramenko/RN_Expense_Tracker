@@ -1,16 +1,14 @@
 import axios from "axios";
-import { Expense } from "../types/expense";
+import { Expense, NewExpense } from "../types/expense";
 
 const BASE_URL =
   "https://expensetracker-f6662-default-rtdb.europe-west1.firebasedatabase.app";
 
 export const storeExpense = async (expenseData: Omit<Expense, "id">) => {
   const response = await axios.post(`${BASE_URL}/expenses.json`, expenseData);
+  const id = response.data.name;
 
-  //just check the data
-  const newExpense = await axios.get(`${BASE_URL}/expenses/${response.data.name}.json`)
-  console.log(newExpense.data);
-
+  return id;
 };
 
 export const getExpenses = async () => {
@@ -31,3 +29,11 @@ export const getExpenses = async () => {
 
   return expenses;
 };
+
+export const updateServerExpense = (id: string, expenseData: NewExpense) => {
+  return axios.put(`${BASE_URL}/expenses/${id}.json`, expenseData);
+}
+
+export const deleteExpense = async (id: string) => {
+  return axios.delete(`${BASE_URL}/expenses/${id}.json`)
+}

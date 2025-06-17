@@ -2,12 +2,12 @@ import { Text, View } from "react-native";
 import React, { useState } from "react";
 import Input from "./Input";
 import ActionButton from "../ui/ActionButton";
-import { Expense } from "../../types/expense";
+import { Expense, NewExpense } from "../../types/expense";
 import { convertDateToString } from "../../utils/date";
 
 interface ExpenseFormProps {
   onCancel: () => void;
-  onSubmit: (expense: Expense) => void;
+  onSubmit: (expense: NewExpense) => void;
   submitButtonLabel: string;
   selectedExpenseData: Expense | undefined;
 }
@@ -56,7 +56,7 @@ const ExpenseForm = ({
 
   const handleSubmission = () => {
     const expenseData = {
-      id: selectedExpenseData?.id || "0",
+      // id: selectedExpenseData?.id || "0",
       amount: +inputs.amount.value,
       date: new Date(inputs.date.value),
       description: inputs.description.value,
@@ -109,7 +109,7 @@ const ExpenseForm = ({
             value: inputs.amount.value,
           }}
         />
-
+          
         <Input
           isValid={inputs.date.isValid}
           errorMsg={inputs.date.errorMsg}
