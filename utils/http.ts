@@ -32,8 +32,8 @@ export const getExpenses = async () => {
 
 export const updateServerExpense = (id: string, expenseData: NewExpense) => {
   return axios.put(`${BASE_URL}/expenses/${id}.json`, expenseData);
-}
+};
 
 export const deleteExpense = async (id: string) => {
-  return axios.delete(`${BASE_URL}/expenses/${id}.json`)
-}
+  return axios.delete(`${BASE_URL}/expenses/${id}.json`);
+};

@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { Expense } from "../types/expense";
-import { DUMMY_EXPENSES } from "../data";
 import { getExpenses } from "../utils/http";
 
 interface ExpensesStore {
@@ -19,14 +18,6 @@ export const useExpensesStore = create<ExpensesStore>((set) => ({
     })),
   addExpense: (expenseData) =>
     set((state) => {
-      // const newId =
-      //   Math.max(
-      //     0,
-      //     ...state.expenses.map((expense) => {
-      //       const currId = Number(expense.id.slice(1));
-      //       return currId;
-      //     })
-      //   ) + 1;
       return {
         expenses: [expenseData, ...state.expenses],
       };
@@ -38,7 +29,7 @@ export const useExpensesStore = create<ExpensesStore>((set) => ({
       ),
     })),
   fetchExpenses: async () => {
-      const res = await getExpenses();
-      set({ expenses: res.reverse() });
+    const res = await getExpenses();
+    set({ expenses: res.reverse() });
   },
 }));

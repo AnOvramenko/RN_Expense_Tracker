@@ -11,16 +11,14 @@ interface ActionButtonProps {
 const ActionButton = ({ children, onPress, type }: ActionButtonProps) => {
   return (
     <View
-      className={
-        "flex-1 rounded-lg" + (type === "ok" ? " bg-primary500" : "")
-      }
-      style={{overflow: 'hidden'}}
+      className={"flex-1 rounded-lg" + (type === "ok" ? " bg-primary500" : "")}
+      style={{ overflow: "hidden" }}
     >
-      <Pressable 
-      onPress={onPress} 
-      style={({pressed}) => [pressed && {backgroundColor: Colors.white}]}
-      className="items-center justify-center p-4 active:opacity-70"
-      android_ripple={{color: Colors.primary100 }}
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => [pressed && { backgroundColor: Colors.white }]}
+        className="items-center justify-center p-4 active:opacity-70"
+        android_ripple={{ color: Colors.primary100 }}
       >
         <Text className="text-primary50">{children}</Text>
       </Pressable>

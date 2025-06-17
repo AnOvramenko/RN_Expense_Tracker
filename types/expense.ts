@@ -5,4 +5,4 @@ export interface Expense {
   amount: number;
 }
 
-export interface NewExpense extends Omit<Expense, 'id'>{};
+export interface NewExpense extends Omit<Expense, "id"> {}

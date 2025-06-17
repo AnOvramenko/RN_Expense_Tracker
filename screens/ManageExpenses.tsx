@@ -5,14 +5,18 @@ import IconButton from "../components/ui/IconButton";
 import { Colors } from "../GlobalStyles";
 import { useExpensesStore } from "../stores/expensesStore";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
-import { Expense, NewExpense } from "../types/expense";
-import { deleteExpense, storeExpense, updateServerExpense } from "../utils/http";
+import { NewExpense } from "../types/expense";
+import {
+  deleteExpense,
+  storeExpense,
+  updateServerExpense,
+} from "../utils/http";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 import ErrorOverlay from "../components/ui/ErrorOverlay";
 
 const ManageExpenses = ({ navigation, route }: ManageExpensesScreenProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const removeExpense = useExpensesStore((state) => state.removeExpense);
   const addExpense = useExpensesStore((state) => state.addExpense);
@@ -35,32 +39,31 @@ const ManageExpenses = ({ navigation, route }: ManageExpensesScreenProps) => {
         removeExpense(route.params.id);
         navigation.goBack();
       } catch (error) {
-        setError('Could not delete expense - please try again later');
+        setError("Could not delete expense - please try again later");
         setIsSubmitting(false);
-      } 
+      }
     }
   };
 
   const handleConfirmExpense = async (expenseData: NewExpense) => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
       if (isEditing) {
-        updateExpense({id: route.params.id, ...expenseData});
-        await updateServerExpense(route.params.id, expenseData)
+        updateExpense({ id: route.params.id, ...expenseData });
+        await updateServerExpense(route.params.id, expenseData);
       } else {
         const id = await storeExpense(expenseData);
-        addExpense({id, ...expenseData});
+        addExpense({ id, ...expenseData });
       }
 
       navigation.goBack();
     } catch (e) {
-      setError(`Could not ${isEditing ? 'update' : 'add'} expense - please try again later`);
-      setIsSubmitting(false)
+      setError(
+        `Could not ${isEditing ? "update" : "add"} expense - please try again later`
+      );
+      setIsSubmitting(false);
     }
   };
-  
-
-  //2025-06-12
 
   useEffect(() => {
     navigation.setOptions({
@@ -69,11 +72,11 @@ const ManageExpenses = ({ navigation, route }: ManageExpensesScreenProps) => {
   }, [navigation, route.params]);
 
   if (isSubmitting) {
-    return <LoadingOverlay />
+    return <LoadingOverlay />;
   }
 
   if (error && !isSubmitting) {
-    return <ErrorOverlay message={error} onConfirm={() => setError('')}/>
+    return <ErrorOverlay message={error} onConfirm={() => setError("")} />;
   }
 
   return (

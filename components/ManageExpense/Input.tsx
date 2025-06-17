@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   error: {
-    // backgroundColor: Colors.error50,
     borderColor: Colors.error500,
   },
 });

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Input from "./Input";
 import ActionButton from "../ui/ActionButton";
 import { Expense, NewExpense } from "../../types/expense";
-import { convertDateToString } from "../../utils/date";
+import DatePicker from "./DatePicker";
 
 interface ExpenseFormProps {
   onCancel: () => void;
@@ -25,9 +25,7 @@ const ExpenseForm = ({
       errorMsg: "Enter a valid number",
     },
     date: {
-      value: selectedExpenseData
-        ? convertDateToString(selectedExpenseData?.date)
-        : "",
+      value: selectedExpenseData ? selectedExpenseData?.date : new Date(),
       isValid: true,
       errorMsg: "Date must match this format YYYY-MM-DD",
     },
@@ -53,16 +51,27 @@ const ExpenseForm = ({
       };
     });
   };
+  const handleOnChangeDate = (selectedDate: Date) => {
+    setInputs((prevInputs) => {
+      return {
+        ...prevInputs,
+        date: {
+          value: selectedDate,
+          isValid: true,
+          errorMsg: prevInputs.date.errorMsg,
+        },
+      };
+    });
+  };
 
   const handleSubmission = () => {
     const expenseData = {
-      // id: selectedExpenseData?.id || "0",
       amount: +inputs.amount.value,
       date: new Date(inputs.date.value),
       description: inputs.description.value,
     };
     const amountIsValid = !isNaN(expenseData.amount) && expenseData.amount > 0;
-    const dateIsValid = (expenseData.date.toString() !== "Invalid Date");// && (/^\d{4}-\d{2}-\d{2}$/.test(convertDateToString(expenseData.date)));
+    const dateIsValid = expenseData.date.toString() !== "Invalid Date";
     const descriptionIsValid = expenseData.description.trim().length > 0;
 
     if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
@@ -109,18 +118,12 @@ const ExpenseForm = ({
             value: inputs.amount.value,
           }}
         />
-          
-        <Input
-          isValid={inputs.date.isValid}
-          errorMsg={inputs.date.errorMsg}
-          className="flex-1"
+
+        <DatePicker
           label="Date"
-          inputOptions={{
-            placeholder: "YYYY-MM-DD",
-            maxLength: 10,
-            onChangeText: handleOnChangeText.bind(this, "date"),
-            value: inputs.date.value,
-          }}
+          className="flex-1"
+          value={inputs.date.value}
+          onChangeDate={handleOnChangeDate}
         />
       </View>
       <Input

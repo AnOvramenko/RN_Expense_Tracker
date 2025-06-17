@@ -11,7 +11,11 @@ interface ExpensesOutputProps {
   fallbackMessage: string;
 }
 
-const ExpensesOutput = ({title, expenses, fallbackMessage}: ExpensesOutputProps) => {
+const ExpensesOutput = ({
+  title,
+  expenses,
+  fallbackMessage,
+}: ExpensesOutputProps) => {
   const totalAmount = getSumExpenses(expenses);
 
   return (
